@@ -1,0 +1,57 @@
+name: Deploy Vite site to Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      # We use `npm install` (not `npm ci`) and no npm cache on purpose: this repo
+      # ships WITHOUT a package-lock.json, and `npm ci` / cache: npm both REQUIRE a
+      # committed lockfile and fail the first deploy without one. After your first
+      # local `npm install`, commit the generated package-lock.json and you may
+      # switch this to `npm ci` + `cache: npm` for faster, reproducible builds.
+      - name: Install dependencies
+        run: npm install
+      - name: Build
+        # VITE_BASE makes Vite prefix every asset with /<repo-name>/ so assets resolve
+        # under the GitHub Pages project-site subpath. Custom domain or user/org root
+        # site? Remove this env (or set VITE_BASE to "/").
+        env:
+          VITE_BASE: /${{ github.event.repository.name }}/
+        run: npm run build
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
