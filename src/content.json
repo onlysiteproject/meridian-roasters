@@ -1,21 +1,31 @@
 {
-  "title": "meridian-roasters",
-  "tagline": "Welcome — this is your new site, ready to be filled with your story.",
+  "title": "Meridian Roasters",
+  "tagline": "Small-batch coffee, roasted at the edge of dawn.",
   "sections": [
     {
-      "heading": "About",
-      "body": "Tell visitors who you are and what you do. Write as many paragraphs as you like — leave a blank line between them and each becomes its own paragraph.\n\nThis starter text is here so the page looks like a real site from the first minute. Replace it with your own words.",
+      "heading": "Our Story",
+      "body": "Meridian Roasters started with a single drum roaster in a converted garage and a stubborn belief that coffee should taste like where it came from.\n\nToday we source green beans directly from farms across Ethiopia, Colombia, and Sumatra, roasting in small batches every week so every bag reaches you at its peak.",
       "items": []
     },
     {
-      "heading": "What you'll find here",
-      "body": "Use sections like this one to introduce your services, your work, or anything you want to highlight.",
+      "heading": "What We Offer",
+      "body": "From single-origin pour-overs to espresso blends built for milk drinks, we roast for how you actually drink your coffee.",
       "items": [
-        "Add a bullet list by filling the \"items\" array",
-        "Add more sections by adding objects to \"sections\"",
-        "Remove a field you don't need — the page adapts"
+        "Single-origin small-batch roasts",
+        "Signature espresso blends",
+        "Subscription delivery, every 2 or 4 weeks",
+        "Wholesale accounts for cafes and offices"
+      ]
+    },
+    {
+      "heading": "Why Meridian",
+      "body": "We roast to order, not to a warehouse shelf. Every batch is cupped and logged before it ships, and we publish the roast date on every bag.",
+      "items": [
+        "Roasted within 48 hours of shipping",
+        "Direct trade relationships with growers",
+        "Transparent sourcing and pricing"
       ]
     }
   ],
-  "footer": "Built with meridian-roasters."
+  "footer": "Meridian Roasters — roasted at the edge of dawn."
 }
