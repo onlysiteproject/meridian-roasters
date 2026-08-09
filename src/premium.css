@@ -1,0 +1,586 @@
+/* ============================================================
+   Meridian Roasters — design tokens
+   Palette: pre-dawn espresso dark, warm parchment ink, and a
+   dawn gradient (plum -> amber -> pale gold) reserved for the
+   single signature element: the Meridian Line.
+   ============================================================ */
+
+:root {
+  --ink: #17110d;
+  --surface: #1f1811;
+  --surface-raised: #251d15;
+  --parchment: #f2e8d9;
+  --parchment-dim: #d9cbb4;
+  --muted: #9c8a72;
+  --hairline: rgba(242, 232, 217, 0.12);
+  --hairline-strong: rgba(242, 232, 217, 0.22);
+
+  --dawn-plum: #6e3a4e;
+  --dawn-rose: #b0555a;
+  --dawn-amber: #e7a33e;
+  --dawn-gold: #f3d18a;
+
+  --dawn-gradient: linear-gradient(
+    90deg,
+    var(--dawn-plum) 0%,
+    var(--dawn-rose) 32%,
+    var(--dawn-amber) 68%,
+    var(--dawn-gold) 100%
+  );
+
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-body: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --max-w: 1180px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--parchment);
+  font-family: var(--font-body);
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: var(--dawn-amber);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--dawn-amber);
+  outline-offset: 3px;
+}
+
+.wrap {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding-left: clamp(1.25rem, 4vw, 3rem);
+  padding-right: clamp(1.25rem, 4vw, 3rem);
+}
+
+/* ---------- Meridian line — the signature element ----------
+   A thin gradient rule tracing dawn breaking across the
+   meridian. Draws in once on load, then reappears as the
+   divider that stitches every section together. */
+
+.meridian-line {
+  position: relative;
+  height: 2px;
+  width: 100%;
+  background: var(--hairline);
+  overflow: hidden;
+}
+
+.meridian-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--dawn-gradient);
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: meridian-draw 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.15s;
+}
+
+.meridian-line--static::after {
+  animation: none;
+  transform: scaleX(1);
+}
+
+@keyframes meridian-draw {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.meridian-dot {
+  position: absolute;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--dawn-gold);
+  box-shadow: 0 0 12px 2px rgba(243, 209, 138, 0.8);
+  transform: translate(-50%, -50%);
+  animation: meridian-travel 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.15s;
+  opacity: 0;
+}
+
+@keyframes meridian-travel {
+  0% {
+    left: 0%;
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+/* ---------- Header ---------- */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(23, 17, 13, 0.86);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.site-header__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1.25rem;
+  letter-spacing: 0.01em;
+}
+
+.site-nav {
+  display: flex;
+  gap: clamp(1rem, 3vw, 2.25rem);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--parchment-dim);
+}
+
+.site-nav a {
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.site-nav a:hover {
+  color: var(--dawn-gold);
+}
+
+@media (max-width: 640px) {
+  .site-nav {
+    display: none;
+  }
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  padding: clamp(4rem, 12vw, 8rem) 0 clamp(3rem, 8vw, 5rem);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--dawn-gold);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.75rem;
+}
+
+.eyebrow::before {
+  content: "";
+  width: 20px;
+  height: 1px;
+  background: var(--dawn-gold);
+  display: inline-block;
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-weight: 440;
+  font-size: clamp(2.75rem, 7vw, 5.25rem);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  margin: 0;
+  max-width: 15ch;
+}
+
+.hero h1 em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--dawn-gold);
+}
+
+.hero__tagline {
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  color: var(--parchment-dim);
+  font-weight: 300;
+  max-width: 42ch;
+  line-height: 1.6;
+  margin: 1.75rem 0 0;
+}
+
+.hero__meridian {
+  margin-top: clamp(2.5rem, 6vw, 3.5rem);
+  position: relative;
+}
+
+.hero__coords {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+  margin-top: 0.6rem;
+  letter-spacing: 0.04em;
+}
+
+/* ---------- Section scaffolding ---------- */
+
+.section {
+  padding: clamp(3.5rem, 9vw, 6rem) 0;
+}
+
+.section__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: clamp(2rem, 5vw, 3.25rem);
+  flex-wrap: wrap;
+}
+
+.section__label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.section h2 {
+  font-family: var(--font-display);
+  font-weight: 440;
+  font-size: clamp(1.9rem, 4vw, 2.6rem);
+  margin: 0.35rem 0 0;
+  letter-spacing: -0.01em;
+}
+
+.section__note {
+  font-size: 0.92rem;
+  color: var(--muted);
+  max-width: 30ch;
+  text-align: right;
+  line-height: 1.55;
+}
+
+@media (max-width: 640px) {
+  .section__note {
+    text-align: left;
+  }
+}
+
+/* ---------- Story ---------- */
+
+.story {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(2rem, 6vw, 5rem);
+  align-items: start;
+}
+
+.story p {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--parchment-dim);
+  margin: 0 0 1.2rem;
+}
+
+.story p:last-child {
+  margin-bottom: 0;
+}
+
+.story__figure {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  line-height: 1.35;
+  color: var(--parchment);
+  border-left: 2px solid var(--dawn-amber);
+  padding-left: 1.5rem;
+}
+
+@media (max-width: 780px) {
+  .story {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Origins (manifest) ---------- */
+
+.origins {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--hairline);
+}
+
+.origin {
+  padding: 1.75rem 1.5rem;
+  border-bottom: 1px solid var(--hairline);
+  border-right: 1px solid var(--hairline);
+  transition: background 0.25s ease;
+}
+
+.origin:nth-child(3n) {
+  border-right: none;
+}
+
+.origin:hover {
+  background: rgba(242, 232, 217, 0.03);
+}
+
+.origin__coords {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--dawn-amber);
+  letter-spacing: 0.03em;
+}
+
+.origin h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.35rem;
+  margin: 0.6rem 0 0.85rem;
+}
+
+.origin dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.3rem 0.75rem;
+  font-size: 0.82rem;
+}
+
+.origin dt {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  padding-top: 0.1rem;
+}
+
+.origin dd {
+  margin: 0;
+  color: var(--parchment-dim);
+}
+
+@media (max-width: 780px) {
+  .origins {
+    grid-template-columns: 1fr;
+  }
+  .origin {
+    border-right: none;
+  }
+}
+
+/* ---------- Ledger (offerings) ---------- */
+
+.ledger {
+  border-top: 1px solid var(--hairline);
+}
+
+.ledger-row {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1.4fr) minmax(0, 2fr) auto;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--hairline);
+  position: relative;
+}
+
+.ledger-row::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--dawn-gradient);
+  transform: scaleY(0);
+  transform-origin: top center;
+  transition: transform 0.35s ease;
+}
+
+.ledger-row:hover::before {
+  transform: scaleY(1);
+}
+
+.ledger-row__num {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.ledger-row__name {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 440;
+}
+
+.ledger-row__desc {
+  font-size: 0.92rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.ledger-row__tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dawn-gold);
+  white-space: nowrap;
+  justify-self: end;
+}
+
+@media (max-width: 700px) {
+  .ledger-row {
+    grid-template-columns: 2rem 1fr;
+    row-gap: 0.4rem;
+  }
+  .ledger-row__desc {
+    grid-column: 2;
+  }
+  .ledger-row__tag {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+
+/* ---------- Why (proof points) ---------- */
+
+.proof {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--hairline);
+  border: 1px solid var(--hairline);
+}
+
+.proof__item {
+  background: var(--ink);
+  padding: 2rem 1.75rem;
+}
+
+.proof__num {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(2.25rem, 4vw, 3rem);
+  color: var(--dawn-gold);
+  line-height: 1;
+}
+
+.proof__label {
+  margin-top: 0.9rem;
+  font-size: 0.92rem;
+  color: var(--parchment-dim);
+  line-height: 1.5;
+}
+
+@media (max-width: 780px) {
+  .proof {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- CTA ---------- */
+
+.cta {
+  text-align: center;
+  padding: clamp(4rem, 10vw, 6rem) 0;
+}
+
+.cta h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  margin: 0 auto 1.75rem;
+  max-width: 18ch;
+}
+
+.cta__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--dawn-gold);
+  padding: 0.95rem 1.75rem;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 0 0 0 rgba(243, 209, 138, 0);
+}
+
+.cta__button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px -8px rgba(243, 209, 138, 0.55);
+}
+
+/* ---------- Footer ---------- */
+
+.site-footer {
+  border-top: 1px solid var(--hairline);
+  padding: 2.5rem 0;
+}
+
+.site-footer__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
